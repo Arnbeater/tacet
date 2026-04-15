@@ -112,5 +112,5 @@ export async function exportVideo(
   ff.FS('unlink', inputName);
   ff.FS('unlink', 'output.mp4');
 
-  return new Blob([data.buffer.slice(0)], { type: 'video/mp4' });
+  return new Blob([data.buffer.slice(0) as ArrayBuffer], { type: 'video/mp4' });
 }
