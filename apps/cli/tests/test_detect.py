@@ -88,14 +88,15 @@ class TestDetectSilences:
         assert len(silences) == 2
 
     def test_custom_threshold(self):
-        # Signal at -50 dB — below -40 threshold but above -60
-        rms = 10 ** (-50 / 20)
-        rms_db = [rms] * 100  # 1 second
+        # rms_db values at -50 dB — below -40 threshold but above -60
+        rms_db_value = -50.0
+        rms_db = [rms_db_value] * 100  # 1 second of signal at -50 dB
+
         silences_default = detect_silences(rms_db, BUCKET_DURATION, threshold=-40.0)
         silences_lower = detect_silences(rms_db, BUCKET_DURATION, threshold=-60.0)
 
-        assert len(silences_default) == 1  # Below -40 → silence
-        assert len(silences_lower) == 0    # Above -60 → not silence
+        assert len(silences_default) == 1  # -50 < -40 → treated as silence
+        assert len(silences_lower) == 0    # -50 > -60 → not silence
 
 
 class TestGetKeepSegments:
