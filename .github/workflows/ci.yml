@@ -1,0 +1,103 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  web:
+    name: Web — lint, typecheck, test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/web
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        working-directory: .
+
+      - name: Typecheck
+        run: pnpm exec tsc --noEmit
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm test --coverage
+
+      - name: Build
+        run: pnpm build
+
+  cli:
+    name: CLI — Python tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install test dependencies
+        run: pip install pytest
+        working-directory: apps/cli
+
+      - name: Run tests
+        run: python -m pytest tests/ -v
+        working-directory: apps/cli
+
+  algorithm-parity:
+    name: Algorithm parity check
+    runs-on: ubuntu-latest
+    needs: [web, cli]
+    if: false  # Enable once test-fixtures/short-talking-head.mp4 is added
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ffmpeg
+        run: sudo apt-get install -y ffmpeg
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 8
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - name: Install all deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Generate CLI silences
+        run: |
+          python apps/cli/tacet.py test-fixtures/short-talking-head.mp4 \
+            --json > /tmp/cli-silences.json
+
+      - name: Verify parity with expected fixture
+        run: |
+          python scripts/check-parity.py \
+            /tmp/cli-silences.json \
+            test-fixtures/expected-silences.json \
+            --tolerance 0.01

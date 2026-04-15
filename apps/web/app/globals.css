@@ -1,0 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400;500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #0d0c0a;
+  --bg-elev: #14130f;
+  --ink: #e8e2d4;
+  --ink-dim: #8a8272;
+  --ink-faint: #3d392f;
+  --rule: #28251e;
+  --accent: #c8a55b;
+  --accent-dim: #7a6638;
+  --silence: #7a3a2e;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.5;
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at top left, rgba(200, 165, 91, 0.04), transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(122, 58, 46, 0.03), transparent 60%);
+}
+
+/* Range input — custom Ordo styling */
+.tacet-range {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.tacet-range::-webkit-slider-runnable-track {
+  height: 1px;
+  background: var(--ink-faint);
+}
+
+.tacet-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 14px;
+  width: 14px;
+  background: var(--accent);
+  margin-top: -7px;
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--accent);
+  transition: transform 0.2s;
+  border-radius: 0;
+}
+
+.tacet-range::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.tacet-range::-moz-range-track {
+  height: 1px;
+  background: var(--ink-faint);
+}
+
+.tacet-range::-moz-range-thumb {
+  height: 14px;
+  width: 14px;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--accent);
+  border-radius: 0;
+}
+
+/* Grain overlay */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 1;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.05 0 0 0 0 0.05 0 0 0 0 0.05 0 0 0 0.25 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay;
+}
+
+/* Indeterminate progress animation */
+@keyframes tacet-slide {
+  0% {
+    left: -30%;
+  }
+  100% {
+    left: 100%;
+  }
+}

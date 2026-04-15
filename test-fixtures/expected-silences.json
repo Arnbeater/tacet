@@ -1,0 +1,10 @@
+{
+  "_readme": "Ground truth for short-talking-head.mp4. Add the actual video file to this directory, then run both implementations and verify they match within 10ms tolerance. The video is gitignored (too large). See CONTRIBUTING for how to generate the fixture.",
+  "_params": {
+    "threshold": -40,
+    "minLength": 0.4,
+    "padding": 0.1
+  },
+  "_how_to_generate": "python apps/cli/tacet.py test-fixtures/short-talking-head.mp4 --json > test-fixtures/expected-silences.json",
+  "silences": []
+}

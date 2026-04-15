@@ -1,0 +1,10 @@
+# Core — no extra deps beyond stdlib + ffmpeg binary
+# ffmpeg must be installed separately (see README)
+
+# Optional: local backend server
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+python-multipart>=0.0.9
+
+# Development
+pytest>=8.0.0
