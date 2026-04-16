@@ -1,6 +1,6 @@
 'use client';
 
-import { useReducer, useRef, useCallback, useEffect } from 'react';
+import React, { useReducer, useRef, useCallback, useEffect } from 'react';
 import { DropZone } from '@/components/DropZone';
 import { Waveform } from '@/components/Waveform';
 import { Controls } from '@/components/Controls';
